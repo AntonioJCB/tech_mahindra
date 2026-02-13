@@ -7,11 +7,88 @@
     <link rel="stylesheet" href="homepage.css" />
   </head>
   <header>
-    <h1>Welcome to the Project Manager</h1>
+    <h1>Welcome UserXXXXX</h1>
+    <button
+      class="logout-btn"
+      onclick="window.location.href = '/InicioSesion/iniciosesion.html'"
+    >
+      Logout
+    </button>
   </header>
   <body>
-    <div class="grafica">
-      <img src="https://tudashboard.com/grafica-de-pastel/" alt="Grafica 1" />
+    <div class="graficas-container">
+      <div class="grafica">
+        <div class="grafica-item">
+          <h3>Rendimiento</h3>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8XHDfYQiJ7--qEHxTkWI74bm81Ozi0liPBQ&s"
+            alt="Grafica 1"
+          />
+        </div>
+      </div>
+      <div class="grafica">
+        <div class="grafica-item">
+          <h3>Costo por Tiempo</h3>
+          <img
+            src="https://mexico.unir.net/wp-content/uploads/sites/6/2022/05/grafico-diagramas.jpg"
+            alt="Grafica 2"
+          />
+        </div>
+      </div>
+      <div class="grafica">
+        <div class="grafica-item">
+          <h3>Progreso del Grupo</h3>
+          <img
+            src="https://www.researchgate.net/publication/336077224/figure/fig1/AS:807544620597248@1569545049003/Grafico-de-rendimiento-de-la-clase-grupo-Modelo-A.png"
+            alt="Grafica 3"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="tasks-section">
+      <h2>Task Status</h2>
+      <table class="tasks-table">
+        <thead>
+          <tr>
+            <th>Task Name</th>
+            <th>Assigned To</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Design Login Page</td>
+            <td>John</td>
+            <td class="status-done">Done</td>
+          </tr>
+          <tr>
+            <td>Create Database Schema</td>
+            <td>Maria</td>
+            <td class="status-in-progress">In Progress</td>
+          </tr>
+          <tr>
+            <td>Setup API Endpoints</td>
+            <td>Carlos</td>
+            <td class="status-in-progress">In Progress</td>
+          </tr>
+          <tr>
+            <td>Frontend Integration</td>
+            <td>Ana</td>
+            <td class="status-pending">Pending</td>
+          </tr>
+          <tr>
+            <td>Testing & QA</td>
+            <td>Diego</td>
+            <td class="status-pending">Pending</td>
+          </tr>
+          <tr>
+            <td>Documentation</td>
+            <td>Sofia</td>
+            <td class="status-pending">Pending</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </body>
 </html>

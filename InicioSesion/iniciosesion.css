@@ -1,6 +1,27 @@
 * {
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+:root {
+  --primary-red: #e31837;
+  --accent-red: #950029;
+  --dark-text: #231f20;
+  --steel-neutral: #4d4d4f;
+  --light-grey: #e6e7e8;
+  --white: #ffffff;
+}
+
+#logo {
+  position: fixed;
+  top: 1.25em;
+  left: 1.25em;
+  width: 5em;
+  height: auto;
+  z-index: 100;
+  object-fit: contain;
+  width: 12.5em;
+  height: auto;
 }
 
 .container {
@@ -9,24 +30,94 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: white;
-  border-color: black;
+  background-color: var(--light-grey);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.form-box {
+  background-color: var(--white);
+  border: 0.125em solid var(--steel-neutral);
+  border-radius: 0.625em;
+  padding: 2.5em;
+  box-shadow: 0 0.25em 0.75em rgba(35, 31, 32, 0.15);
+  width: 21.875em;
+  text-align: center;
+}
+
+.form-box h2 {
+  margin-top: 0;
+  color: var(--primary-red);
+  margin-bottom: 1.875em;
+  font-size: 1.75em;
+}
+
+.form-box form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-box label {
+  text-align: left;
+  margin-bottom: 0.5em;
+  color: var(--dark-text);
+  font-weight: 600;
+  font-size: 1.25em;
 }
 
 #username,
 #password {
-  width: 200px;
-  padding: 10px;
-  margin: 10px;
-  border-radius: 10px;
+  width: 100%;
+  padding: 0.75em;
+  margin-bottom: 1.25em;
+  border-radius: 0.3125em;
+  border: 1px solid var(--light-grey);
+  box-sizing: border-box;
+  font-size: 0.875em;
+  color: var(--dark-text);
+  background-color: var(--white);
+  transition: all 0.3s ease;
 }
 
-#buttonSubmit {
-  background-color: transparent;
-  padding: 10px;
-  border: 0.2cap solid #000;
-  border-radius: 10px;
+#username:focus,
+#password:focus {
+  outline: none;
+  border-color: var(--primary-red);
+  box-shadow: 0 0 0.5em rgba(227, 24, 55, 0.25);
+  background-color: var(--white);
+}
+
+.button-container {
+  display: flex;
+  gap: 0.75em;
+  margin-top: 1.5625em;
+}
+
+#buttonSubmit,
+#buttonRegister {
+  flex: 1;
+  background-color: var(--primary-red);
+  color: var(--white);
+  padding: 0.75em;
+  border: none;
+  border-radius: 0.3125em;
   cursor: pointer;
-  justify-content: center;
-  align-items: center;
+  font-size: 0.875em;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+#buttonSubmit:hover,
+#buttonRegister:hover {
+  background-color: var(--accent-red);
+  transform: translateY(-0.125em);
+  box-shadow: 0 0.25em 0.75em rgba(149, 0, 41, 0.3);
+}
+
+#buttonSubmit:active,
+#buttonRegister:active {
+  transform: translateY(0);
 }
