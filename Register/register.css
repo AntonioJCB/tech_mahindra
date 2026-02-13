@@ -1,0 +1,33 @@
+* {
+  /* box-sizing: border-box; */
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: white;
+  border-color: black;
+  border-radius: 5px;
+}
+
+#username,
+#password {
+  width: 200px;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+#buttonSubmit {
+  background-color: transparent;
+  padding: 10px;
+  border: 0.2cap solid #000;
+  border-radius: 10px;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+}
