@@ -1,0 +1,91 @@
+@import "../Home/homepage.css";
+
+/* Profile-specific layout to match the dashboard look */
+.profile-wrapper {
+  max-width: 80em;
+  margin: 2em auto;
+  display: flex;
+  gap: 2em;
+  align-items: flex-start;
+  padding: 0 1em;
+}
+
+.profile-card {
+  display: flex;
+  gap: 1.5em;
+  align-items: center;
+  background-color: var(--bg-card);
+  padding: 1.5em;
+  border-radius: 0.75em;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0.125em 0.5em rgba(0, 0, 0, 0.06);
+  min-width: 18em;
+}
+
+.avatar {
+  width: 6.5em;
+  height: 6.5em;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-main);
+}
+
+.avatar-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-info h2 {
+  margin: 0;
+  font-size: 1.5em;
+  color: var(--text-primary);
+}
+
+.muted {
+  color: var(--text-secondary);
+  margin: 0.25em 0 0.75em 0;
+}
+
+.profile-email {
+  color: var(--text-secondary);
+  margin-bottom: 1em;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 0.75em;
+}
+
+.profile-details {
+  flex: 1;
+  background-color: var(--bg-card);
+  padding: 1.5em;
+  border-radius: 0.75em;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0.125em 0.5em rgba(0, 0, 0, 0.06);
+}
+
+.profile-details h3 {
+  margin-top: 0;
+  color: var(--text-primary);
+}
+
+@media (max-width: 800px) {
+  .profile-wrapper {
+    flex-direction: column;
+    padding: 1em;
+  }
+
+  .profile-card {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .avatar {
+    width: 5.5em;
+    height: 5.5em;
+  }
+}

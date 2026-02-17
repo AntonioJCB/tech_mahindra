@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="profile.css" />
+  </head>
+  <header>
+    <h1>User Profile</h1>
+    <div class="user-menu-container">
+      <button class="user-icon-btn">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="user-icon"
+        >
+          <path
+            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+          />
+        </svg>
+      </button>
+      <!-- user menu removed; logout moved to sidebar -->
+    </div>
+  </header>
+  <!-- user menu script removed -->
+  <body>
+    <div class="layout">
+      <nav class="sidebar">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="../Home/homepage.html">Dashboard</a>
+          </li>
+          <li class="nav-item active"><a href="profile.html">Profile</a></li>
+          <li class="nav-item">
+            <a href="../Project/project.html">Projects</a>
+          </li>
+        <a class="sidebar-logout" href="/InicioSesion/iniciosesion.html"
+          >Logout</a
+        >
+      </nav>
+
+      <main class="main-content">
+        <div class="profile-wrapper">
+          <div class="profile-card">
+            <div class="avatar-section">
+              <img
+                class="avatar"
+                src="https://www.w3schools.com/howto/img_avatar.png"
+                alt="Avatar"
+              />
+            </div>
+            <div class="profile-info">
+              <h2>Juan Pérez</h2>
+              <p class="muted">Full Stack Developer</p>
+              <p class="profile-email">juan.perez@example.com</p>
+
+              <div class="profile-actions">
+                <button class="logout-btn">Edit Profile</button>
+                <button
+                  class="logout-btn"
+                  style="background: var(--hover-highlight)"
+                >
+                  Change Password
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-details">
+            <h3>About</h3>
+            <p>
+              Experienced developer with a passion for building scalable web
+              applications. Skilled in JavaScript, Python, and cloud
+              technologies. Always eager to learn new tools and improve my
+              craft.
+            </p>
+
+            <h3>Statistics</h3>
+            <table class="tasks-table">
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Projects</td>
+                  <td>12</td>
+                </tr>
+                <tr>
+                  <td>Completed Tasks</td>
+                  <td class="status-done">158</td>
+                </tr>
+                <tr>
+                  <td>Pending Reviews</td>
+                  <td class="status-pending">3</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

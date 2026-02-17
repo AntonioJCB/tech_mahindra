@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects</title>
+    <link rel="stylesheet" href="project.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <nav class="sidebar">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="../Home/homepage.html">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a href="../Profile/profile.html">Profile</a>
+          </li>
+          <li class="nav-item active"><a href="project.html">Projects</a></li>
+          <li class="nav-item">
+            <a href="../Register/register.html">Register</a>
+          </li>
+          <li class="nav-item">
+            <a href="../InicioSesion/iniciosesion.html">Login</a>
+          </li>
+        </ul>
+        <a class="sidebar-logout" href="/InicioSesion/iniciosesion.html"
+          >Logout</a
+        >
+      </nav>
+
+      <main class="main-content">
+        <section class="projects-header">
+          <h1>My Issues</h1>
+          <p class="muted">All issues assigned to you are shown below.</p>
+        </section>
+
+        <section class="issues-list">
+          <!-- In a real app this would be generated from the user's data -->
+          <div class="issue-card">
+            <div class="issue-left">
+              <h3 class="issue-title">Login page UI fixes</h3>
+              <p class="issue-meta">
+                Project: Website Redesign • Due: 2026-03-01
+              </p>
+            </div>
+            <div class="issue-right">
+              <p class="issue-desc">
+                Buttons misaligned on small screens; adjust flex and paddings.
+              </p>
+              <span class="issue-status status-in-progress">In Progress</span>
+            </div>
+          </div>
+
+          <div class="issue-card">
+            <div class="issue-left">
+              <h3 class="issue-title">API: validate input</h3>
+              <p class="issue-meta">
+                Project: Backend Services • Due: 2026-02-25
+              </p>
+            </div>
+            <div class="issue-right">
+              <p class="issue-desc">
+                Add server-side validation and return clear error messages.
+              </p>
+              <span class="issue-status status-pending">Pending</span>
+            </div>
+          </div>
+
+          <div class="issue-card">
+            <div class="issue-left">
+              <h3 class="issue-title">Write documentation for auth flow</h3>
+              <p class="issue-meta">Project: Docs • Due: 2026-03-10</p>
+            </div>
+            <div class="issue-right">
+              <p class="issue-desc">
+                Describe JWT issuance, refresh and logout behavior for
+                developers.
+              </p>
+              <span class="issue-status status-done">Done</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="issue-detail">
+          <h2>Issue Details</h2>
+          <div class="detail-card">
+            <h3 id="detail-title">Select an issue to see details</h3>
+            <p id="detail-desc">
+              Click an issue card to view more information here.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Scripts removed per request -->
+  </body>
+</html>

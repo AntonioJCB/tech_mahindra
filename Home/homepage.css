@@ -291,3 +291,98 @@ header h1 {
   color: var(--error);
   font-weight: 600;
 }
+
+/* Sidebar layout */
+.layout {
+  display: flex;
+  min-height: calc(100vh - 6em);
+}
+
+.sidebar {
+  width: 14em;
+  background-color: var(--bg-card);
+  border-right: 1px solid var(--border-color);
+  padding: 1.25em;
+  box-shadow: 0 0.125em 0.5em rgba(0, 0, 0, 0.03);
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.nav-item a {
+  display: block;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 0.6em 0.75em;
+  border-radius: 0.5em;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.nav-item a:hover {
+  background-color: var(--bg-main);
+  color: var(--primary-action);
+}
+
+.nav-item.active a {
+  background-color: var(--primary-action);
+  color: #fff;
+}
+
+.main-content {
+  flex: 1;
+}
+
+@media (max-width: 850px) {
+  .layout {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    display: flex;
+  }
+  .nav-list {
+    flex-direction: row;
+    gap: 0.5em;
+    overflow-x: auto;
+  }
+  .nav-item a {
+    padding: 0.5em 0.75em;
+  }
+}
+
+/* Logout button fixed to bottom of sidebar */
+.sidebar {
+  position: relative;
+}
+.sidebar-logout {
+  position: absolute;
+  bottom: 1.25em;
+  left: 1.25em;
+  right: 1.25em;
+  display: inline-block;
+  padding: 0.6em 0.75em;
+  background: var(--destructive);
+  color: #fff;
+  text-align: center;
+  border-radius: 0.5em;
+  text-decoration: none;
+  font-weight: 600;
+}
+.sidebar-logout:hover {
+  background: #7d001f;
+}
+
+@media (max-width: 850px) {
+  .sidebar-logout {
+    position: static;
+    margin-top: 0.5em;
+  }
+}
