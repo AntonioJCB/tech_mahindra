@@ -15,7 +15,7 @@
     <div class="container">
       <div class="form-box">
         <h2>Login</h2>
-        <form action="/login" method="post">
+        <form id="loginForm">
           <label for="username">Username</label>
           <br />
           <input
@@ -39,13 +39,7 @@
           <br />
           <br />
           <div class="button-container">
-            <button
-              id="buttonSubmit"
-              type="button"
-              onclick="window.location.href = '/Home/homepage.html'"
-            >
-              Login
-            </button>
+            <button id="buttonSubmit" type="submit">Login</button>
             <button
               id="buttonRegister"
               type="button"
@@ -55,6 +49,7 @@
             </button>
           </div>
         </form>
+        <script src="/script.js"></script>
       </div>
     </div>
   </body>
