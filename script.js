@@ -1,6 +1,3 @@
-// Client-side login/register logic using a hardcoded JSON-like store (localStorage)
-// No backend required; data persists in localStorage between reloads.
-
 function loadUsers() {
   const json = localStorage.getItem("users");
   if (!json) return [];
