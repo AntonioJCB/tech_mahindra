@@ -1,0 +1,334 @@
+/* common reset and variables */
+* {
+  box-sizing: border-box;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+:root {
+  /* Neutral Colors */
+  --bg-main: #f6f6f6;
+  --bg-card: #ffffff;
+  --text-primary: #231f20;
+  --text-secondary: #4d4d4f;
+  --border-color: #e6e7e8;
+
+  /* Brand Accents */
+  --primary-action: #e31837;
+  --hover-highlight: #ff4f6e;
+  --destructive: #950029;
+
+  /* Status Colors */
+  --success: #4caf50;
+  --warning: #ffa000;
+  --error: #d32f2f;
+  --info: #1976d2;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+}
+
+/* HEADER AND USER MENU */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(
+    90deg,
+    var(--primary-action) 0%,
+    var(--hover-highlight) 100%
+  );
+  color: white;
+  padding: 1.5em 2.5em;
+  border-bottom: 0;
+  box-shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.15);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 500;
+}
+
+header h1 {
+  color: #fff;
+  font-size: 2em;
+  margin: 0;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0.05em 0.1em rgba(0, 0, 0, 0.2);
+}
+
+/* username shown beside header title */
+.header-user {
+  margin-left: 1em;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1em;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.logout-btn {
+  background-color: var(--primary-action);
+  color: #ffffff;
+  border: none;
+  padding: 0.75em 1.5em;
+  border-radius: 0.5em;
+  font-size: 0.875em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  background-color: var(--hover-highlight);
+  transform: translateY(-0.125em);
+  box-shadow: 0 0.25em 0.75em rgba(227, 24, 55, 0.3);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+}
+
+/* User Menu Styles */
+.user-menu-container {
+  position: relative;
+}
+
+.user-icon-btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.user-icon-btn:hover {
+  background-color: var(--hover-highlight);
+  transform: scale(1.05);
+  box-shadow: 0 0.25em 0.75em rgba(227, 24, 55, 0.3);
+}
+
+.user-icon-btn:active {
+  transform: scale(0.98);
+}
+
+.user-icon {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5em;
+  box-shadow: 0 0.5em 1.5em rgba(0, 0, 0, 0.15);
+  min-width: 12em;
+  margin-top: 0.5em;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.user-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 0.875em 1.25em;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  gap: 0.75em;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: var(--bg-main);
+  color: var(--primary-action);
+}
+
+.dropdown-icon {
+  width: 1.25em;
+  height: 1.25em;
+  flex-shrink: 0;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 0.5em 0;
+}
+
+.dropdown-logout {
+  color: var(--error);
+}
+
+.dropdown-logout:hover {
+  background-color: rgba(211, 47, 47, 0.1);
+  color: var(--error);
+}
+
+/* TABLE COMMONS */
+.tasks-table td {
+  padding: 1em;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.tasks-table tbody tr {
+  background-color: var(--bg-card);
+  transition: background-color 0.2s ease;
+}
+
+.tasks-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+.tasks-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.status-done {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.status-in-progress {
+  color: var(--warning);
+  font-weight: 600;
+}
+
+.status-pending {
+  color: var(--error);
+  font-weight: 600;
+}
+
+/* Sidebar layout */
+/* make the sidebar span full viewport height and remain visible */
+/* header sticks to top; sidebar must start below it */
+:root {
+  --header-height: 4.5em; /* adjust if header padding/size changes */
+  /* ensure body background fills under fixed header */
+  background-color: var(--bg-main);
+}
+.layout {
+  display: flex;
+  /* avoid sidebar overlap when it's fixed */
+  margin-left: 14em;
+  margin-top: var(--header-height);
+  min-height: calc(100vh - var(--header-height));
+}
+
+.sidebar {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  height: calc(100vh - var(--header-height));
+  width: 14em;
+  background-color: var(--bg-card);
+  border-right: 1px solid var(--border-color);
+  padding: 1.25em;
+  box-shadow: 0 0.125em 0.5em rgba(0, 0, 0, 0.03);
+  overflow-y: auto;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.nav-item a {
+  display: block;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 0.6em 0.75em;
+  border-radius: 0.5em;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.nav-item a:hover {
+  background-color: var(--bg-main);
+  color: var(--primary-action);
+}
+
+.nav-item.active a {
+  background-color: var(--primary-action);
+  color: #fff;
+}
+
+.main-content {
+  flex: 1;
+}
+
+@media (max-width: 850px) {
+  .layout {
+    flex-direction: column;
+    margin-left: 0;
+  }
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: flex;
+  }
+  .nav-list {
+    flex-direction: row;
+    gap: 0.5em;
+    overflow-x: auto;
+  }
+  .nav-item a {
+    padding: 0.5em 0.75em;
+  }
+}
+
+/* Logout button fixed to bottom of sidebar */
+.sidebar-logout {
+  position: absolute;
+  bottom: 1.25em;
+  left: 1.25em;
+  right: 1.25em;
+  display: inline-block;
+  padding: 0.6em 0.75em;
+  background: var(--destructive);
+  color: #fff;
+  text-align: center;
+  border-radius: 0.5em;
+  text-decoration: none;
+  font-weight: 600;
+}
+.sidebar-logout:hover {
+  background: #7d001f;
+}
+
+@media (max-width: 850px) {
+  .sidebar-logout {
+    position: static;
+    margin-top: 0.5em;
+  }
+}

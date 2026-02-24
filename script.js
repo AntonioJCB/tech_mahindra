@@ -1,6 +1,3 @@
-// Client-side login/register logic using a hardcoded JSON-like store (localStorage)
-// No backend required; data persists in localStorage between reloads.
-
 function loadUsers() {
   const json = localStorage.getItem("users");
   if (!json) return [];
@@ -13,11 +10,115 @@ function loadUsers() {
   }
 }
 
+function setAuth(username) {
+  localStorage.setItem("currentUser", username);
+  localStorage.setItem("sessionToken", Date.now().toString());
+}
+
+function clearAuth() {
+  localStorage.removeItem("currentUser");
+  localStorage.removeItem("sessionToken");
+}
+
+function isAuthenticated() {
+  return !!localStorage.getItem("currentUser");
+}
+
+function verifyAuth() {
+  const path = location.pathname.toLowerCase();
+  if (
+    path.endsWith("/iniciosesion/iniciosesion.html") ||
+    path.endsWith("/register/register.html")
+  ) {
+    if (isAuthenticated()) {
+      location.href = "/Home/homepage.html";
+    }
+    return;
+  }
+  if (!isAuthenticated()) {
+    location.href = "/InicioSesion/iniciosesion.html";
+  }
+}
+
+function loadHeaderNav() {
+  const placeholder = document.getElementById("header-placeholder");
+  if (!placeholder) return;
+
+  const tryPath = (p) =>
+    fetch(p).then((res) => {
+      if (!res.ok) throw new Error("not ok");
+      return res.text();
+    });
+
+  tryPath("/shared/header.html")
+    .catch(() => tryPath("../shared/header.html"))
+    .then((html) => {
+      placeholder.innerHTML = html;
+      updateHeaderTitle();
+      setActiveNav();
+      setupUserMenu();
+    })
+    .catch((err) => console.error("Failed to load header partial", err));
+}
+
+function updateHeaderTitle() {
+  const h1 = document.querySelector("header h1");
+  if (h1) {
+    h1.textContent = document.title;
+  }
+  const userSpan = document.getElementById("header-user");
+  if (userSpan) {
+    const user = localStorage.getItem("currentUser");
+    userSpan.textContent = user ? `| ${user}` : "";
+  }
+}
+
+function setActiveNav() {
+  const links = document.querySelectorAll(".nav-list a");
+  links.forEach((link) => {
+    if (link.pathname === location.pathname) {
+      link.parentElement.classList.add("active");
+    }
+  });
+}
+
+function setupUserMenu() {
+  const btn = document.getElementById("user-icon-btn");
+  const dropdown = document.getElementById("user-dropdown");
+  if (!btn || !dropdown) return;
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.remove("show");
+    }
+  });
+
+  const clearAndRedirect = (e) => {
+    e.preventDefault();
+    clearAuth();
+    location.href = "/InicioSesion/iniciosesion.html";
+  };
+  const sidebarLogout = document.querySelector(".sidebar-logout");
+  if (sidebarLogout) sidebarLogout.addEventListener("click", clearAndRedirect);
+  const dropdownLogout = document.querySelector(".dropdown-logout");
+  if (dropdownLogout)
+    dropdownLogout.addEventListener("click", clearAndRedirect);
+}
+
 function saveUsers(users) {
   localStorage.setItem("users", JSON.stringify(users));
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  verifyAuth();
+
+  loadHeaderNav();
+
   const registerForm = document.getElementById("registerForm");
   const loginForm = document.getElementById("loginForm");
 
@@ -47,8 +148,9 @@ document.addEventListener("DOMContentLoaded", () => {
       users.push({ username, password });
       saveUsers(users);
       console.log("New user registered:", username, users);
-      alert("Registration successful. Redirecting to login.");
-      window.location.href = "/InicioSesion/iniciosesion.html";
+      setAuth(username);
+      alert("Registration successful. Redirecting to dashboard.");
+      window.location.href = "/Home/homepage.html";
     });
   }
 
@@ -74,6 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      setAuth(username);
       alert("Login successful");
       window.location.href = "/Home/homepage.html";
     });
