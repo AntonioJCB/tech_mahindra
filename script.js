@@ -182,3 +182,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+async function fetchPokemon(limit = 20) {
+  try {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}`);
+    const data = await response.json();
+    
+    // Fetch detailed data for each Pokémon
+    const pokemonList = await Promise.all(
+      data.results.map(async (pokemon) => {
+        const detailResponse = await fetch(pokemon.url);
+        const detailData = await detailResponse.json();
+        return {
+          id: detailData.id,
+          name: detailData.name,
+          image: detailData.sprites.other['official-artwork'].front_default || detailData.sprites.front_default,
+          stats: detailData.stats,
+          types: detailData.types
+        };
+      })
+    );
+    
+    return pokemonList;
+  } catch (error) {
+    console.error(error.message);
+    return [];
+  }
+}

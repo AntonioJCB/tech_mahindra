@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokedex</title>
+    <link rel="stylesheet" href="/shared/header.css" />
+    <link rel="stylesheet" href="pokemon.css" />
+  </head>
+  <body>
+    <div id="header-placeholder"></div>
+
+    <div class="layout">
+      <main class="main-content">
+        <div class="pokedex-container">
+          <h1>Pokédex</h1>
+
+          <div class="controls">
+            <input
+              type="number"
+              id="pokemonLimit"
+              class="limit-input"
+              value="20"
+              min="1"
+              max="100"
+              placeholder="Number of Pokémon to load"
+            />
+            <button id="loadBtn" class="load-btn">Load Pokémon</button>
+          </div>
+
+          <div id="loading" class="loading">Loading Pokémon...</div>
+
+          <div id="pokemonGrid" class="pokemon-grid"></div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        loadHeaderNav();
+
+        const loadBtn = document.getElementById("loadBtn");
+        const limitInput = document.getElementById("pokemonLimit");
+        const pokemonGrid = document.getElementById("pokemonGrid");
+        const loading = document.getElementById("loading");
+
+        async function loadPokemon() {
+          loading.style.display = "block";
+          pokemonGrid.innerHTML = "";
+
+          const limit = parseInt(limitInput.value) || 20;
+          const pokemonList = await fetchPokemon(limit);
+
+          loading.style.display = "none";
+
+          pokemonList.forEach((pokemon) => {
+            const card = document.createElement("div");
+            card.className = "pokemon-card";
+
+            const statsHTML = pokemon.stats
+              .map(
+                (stat) =>
+                  `<div class="stat">
+                            <span class="stat-name">${stat.stat.name}</span>
+                            <span class="stat-value">${stat.base_stat}</span>
+                        </div>`,
+              )
+              .join("");
+
+            const typesHTML = pokemon.types
+              .map(
+                (type) =>
+                  `<span class="type-badge type-${type.type.name}">${type.type.name}</span>`,
+              )
+              .join("");
+
+            card.innerHTML = `
+                        <div class="pokemon-image-wrapper">
+                            <img src="${pokemon.image}" alt="${pokemon.name}" class="pokemon-image" onerror="this.src='https://via.placeholder.com/200'">
+                        </div>
+                        <h2 class="pokemon-name">${pokemon.name.toUpperCase()}</h2>
+                        <div class="pokemon-types">
+                            ${typesHTML}
+                        </div>
+                        <div class="pokemon-stats">
+                            ${statsHTML}
+                        </div>
+                    `;
+
+            pokemonGrid.appendChild(card);
+          });
+        }
+
+        loadBtn.addEventListener("click", loadPokemon);
+
+        // Load initial Pokémon on page load
+        loadPokemon();
+      });
+    </script>
+  </body>
+</html>

@@ -1,23 +1,19 @@
-/* common reset and variables */
 * {
   box-sizing: border-box;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 :root {
-  /* Neutral Colors */
   --bg-main: #f6f6f6;
   --bg-card: #ffffff;
   --text-primary: #231f20;
   --text-secondary: #4d4d4f;
   --border-color: #e6e7e8;
 
-  /* Brand Accents */
   --primary-action: #e31837;
   --hover-highlight: #ff4f6e;
   --destructive: #950029;
 
-  /* Status Colors */
   --success: #4caf50;
   --warning: #ffa000;
   --error: #d32f2f;
@@ -31,7 +27,6 @@ body {
   padding: 0;
 }
 
-/* HEADER AND USER MENU */
 header {
   display: flex;
   justify-content: space-between;
@@ -61,7 +56,6 @@ header h1 {
   text-shadow: 0 0.05em 0.1em rgba(0, 0, 0, 0.2);
 }
 
-/* username shown beside header title */
 .header-user {
   margin-left: 1em;
   color: rgba(255, 255, 255, 0.85);
@@ -223,17 +217,12 @@ header h1 {
   font-weight: 600;
 }
 
-/* Sidebar layout */
-/* make the sidebar span full viewport height and remain visible */
-/* header sticks to top; sidebar must start below it */
 :root {
-  --header-height: 4.5em; /* adjust if header padding/size changes */
-  /* ensure body background fills under fixed header */
+  --header-height: 4.5em;
   background-color: var(--bg-main);
 }
 .layout {
   display: flex;
-  /* avoid sidebar overlap when it's fixed */
   margin-left: 14em;
   margin-top: var(--header-height);
   min-height: calc(100vh - var(--header-height));
@@ -307,7 +296,6 @@ header h1 {
   }
 }
 
-/* Logout button fixed to bottom of sidebar */
 .sidebar-logout {
   position: absolute;
   bottom: 1.25em;
