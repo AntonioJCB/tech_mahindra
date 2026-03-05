@@ -17,20 +17,28 @@
 
           <div class="controls">
             <input
-              type="number"
-              id="pokemonLimit"
-              class="limit-input"
-              value="20"
-              min="1"
-              max="100"
-              placeholder="Number of Pokémon to load"
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Search by name or ID..."
             />
-            <button id="loadBtn" class="load-btn">Load Pokémon</button>
+            <select id="typeFilter" class="filter-select">
+              <option value="">All Types</option>
+            </select>
           </div>
 
           <div id="loading" class="loading">Loading Pokémon...</div>
 
           <div id="pokemonGrid" class="pokemon-grid"></div>
+
+          <div
+            id="loadMoreIndicator"
+            class="load-more-indicator"
+            style="display: none"
+          >
+            <div class="loading-spinner"></div>
+            Loading more Pokémon...
+          </div>
         </div>
       </main>
     </div>
@@ -40,19 +48,130 @@
       document.addEventListener("DOMContentLoaded", async () => {
         loadHeaderNav();
 
-        const loadBtn = document.getElementById("loadBtn");
-        const limitInput = document.getElementById("pokemonLimit");
+        const searchInput = document.getElementById("searchInput");
+        const typeFilter = document.getElementById("typeFilter");
         const pokemonGrid = document.getElementById("pokemonGrid");
         const loading = document.getElementById("loading");
+        const loadMoreIndicator = document.getElementById("loadMoreIndicator");
 
-        async function loadPokemon() {
+        let allPokemon = [];
+        let allTypes = new Set();
+        let currentOffset = 0;
+        const batchSize = 150;
+        let isLoading = false;
+        let hasMore = true;
+
+        // Create intersection observer for infinite scroll
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting && hasMore && !isLoading) {
+                loadMorePokemon();
+              }
+            });
+          },
+          {
+            rootMargin: "100px",
+          },
+        );
+
+        async function loadPokemonData() {
           loading.style.display = "block";
           pokemonGrid.innerHTML = "";
 
-          const limit = parseInt(limitInput.value) || 20;
-          const pokemonList = await fetchPokemon(limit);
+          const newPokemon = await fetchPokemon(batchSize, currentOffset);
+          if (newPokemon.length === 0) {
+            hasMore = false;
+            loading.style.display = "none";
+            return;
+          }
+
+          allPokemon = [...allPokemon, ...newPokemon];
+          currentOffset += batchSize;
+
+          // Extract all unique types
+          newPokemon.forEach((pokemon) => {
+            pokemon.types.forEach((type) => {
+              allTypes.add(type.type.name);
+            });
+          });
+
+          // Populate type filter if not already done
+          if (typeFilter.children.length === 1) {
+            // Only "All Types" option
+            const sortedTypes = Array.from(allTypes).sort();
+            sortedTypes.forEach((type) => {
+              const option = document.createElement("option");
+              option.value = type;
+              option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+              typeFilter.appendChild(option);
+            });
+          }
 
           loading.style.display = "none";
+
+          displayPokemon(newPokemon);
+
+          // Add sentinel element for infinite scroll
+          if (hasMore) {
+            const sentinel = document.createElement("div");
+            sentinel.id = "scroll-sentinel";
+            sentinel.style.height = "20px";
+            pokemonGrid.appendChild(sentinel);
+            observer.observe(sentinel);
+          }
+        }
+
+        async function loadMorePokemon() {
+          if (isLoading || !hasMore) return;
+
+          isLoading = true;
+          loadMoreIndicator.style.display = "block";
+
+          const newPokemon = await fetchPokemon(batchSize, currentOffset);
+          if (newPokemon.length < batchSize) {
+            hasMore = false;
+          }
+
+          if (newPokemon.length > 0) {
+            allPokemon = [...allPokemon, ...newPokemon];
+            currentOffset += batchSize;
+
+            // Extract new types
+            newPokemon.forEach((pokemon) => {
+              pokemon.types.forEach((type) => {
+                allTypes.add(type.type.name);
+              });
+            });
+
+            displayPokemon(newPokemon, true); // Append mode
+          }
+
+          loadMoreIndicator.style.display = "none";
+          isLoading = false;
+
+          // Update sentinel if still has more
+          if (hasMore) {
+            const sentinel = document.getElementById("scroll-sentinel");
+            if (sentinel) {
+              observer.unobserve(sentinel);
+              pokemonGrid.appendChild(sentinel);
+              observer.observe(sentinel);
+            }
+          }
+        }
+
+        function displayPokemon(pokemonList, append = false) {
+          if (!append) {
+            pokemonGrid.innerHTML = "";
+          } else {
+            // Remove existing sentinel when appending
+            const existingSentinel = document.getElementById("scroll-sentinel");
+            if (existingSentinel) {
+              observer.unobserve(existingSentinel);
+              existingSentinel.remove();
+            }
+          }
 
           pokemonList.forEach((pokemon) => {
             const card = document.createElement("div");
@@ -79,7 +198,7 @@
                         <div class="pokemon-image-wrapper">
                             <img src="${pokemon.image}" alt="${pokemon.name}" class="pokemon-image" onerror="this.src='https://via.placeholder.com/200'">
                         </div>
-                        <h2 class="pokemon-name">${pokemon.name.toUpperCase()}</h2>
+                        <h2 class="pokemon-name">#${pokemon.id} ${pokemon.name.toUpperCase()}</h2>
                         <div class="pokemon-types">
                             ${typesHTML}
                         </div>
@@ -90,12 +209,62 @@
 
             pokemonGrid.appendChild(card);
           });
+
+          // Re-add sentinel if has more and no filters
+          if (hasMore && !searchInput.value.trim() && !typeFilter.value) {
+            const sentinel = document.createElement("div");
+            sentinel.id = "scroll-sentinel";
+            sentinel.style.height = "20px";
+            pokemonGrid.appendChild(sentinel);
+            observer.observe(sentinel);
+          }
         }
 
-        loadBtn.addEventListener("click", loadPokemon);
+        function applyFilters() {
+          const searchQuery = searchInput.value.toLowerCase().trim();
+          const selectedType = typeFilter.value;
 
-        // Load initial Pokémon on page load
-        loadPokemon();
+          const hasFilters = searchQuery || selectedType;
+
+          if (hasFilters) {
+            // Disable infinite scroll when filtering
+            const sentinel = document.getElementById("scroll-sentinel");
+            if (sentinel) {
+              observer.unobserve(sentinel);
+            }
+
+            const filtered = allPokemon.filter((pokemon) => {
+              // Filter by search query (name or ID)
+              const matchesSearch =
+                !searchQuery ||
+                pokemon.name.toLowerCase().includes(searchQuery) ||
+                pokemon.id.toString().includes(searchQuery);
+
+              // Filter by type
+              const matchesType =
+                !selectedType ||
+                pokemon.types.some((type) => type.type.name === selectedType);
+
+              return matchesSearch && matchesType;
+            });
+
+            displayPokemon(filtered);
+          } else {
+            // Re-enable infinite scroll when no filters
+            displayPokemon(allPokemon);
+            if (hasMore) {
+              const sentinel = document.getElementById("scroll-sentinel");
+              if (sentinel) {
+                observer.observe(sentinel);
+              }
+            }
+          }
+        }
+
+        searchInput.addEventListener("input", applyFilters);
+        typeFilter.addEventListener("change", applyFilters);
+
+        loadPokemonData();
       });
     </script>
   </body>

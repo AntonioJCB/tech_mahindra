@@ -183,11 +183,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-async function fetchPokemon(limit = 20) {
+async function fetchPokemon(limit = 150, offset = 0) {
   try {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}`);
+    const response = await fetch(
+      `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`,
+    );
     const data = await response.json();
-    
+
     // Fetch detailed data for each Pokémon
     const pokemonList = await Promise.all(
       data.results.map(async (pokemon) => {
@@ -196,13 +198,18 @@ async function fetchPokemon(limit = 20) {
         return {
           id: detailData.id,
           name: detailData.name,
-          image: detailData.sprites.other['official-artwork'].front_default || detailData.sprites.front_default,
+          image:
+            detailData.sprites.other["official-artwork"].front_default ||
+            detailData.sprites.front_default,
           stats: detailData.stats,
-          types: detailData.types
+          types: detailData.types,
         };
-      })
+      }),
     );
-    
+
+    // Sort by ID
+    pokemonList.sort((a, b) => a.id - b.id);
+
     return pokemonList;
   } catch (error) {
     console.error(error.message);
