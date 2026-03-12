@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokémon Battle</title>
+    <link rel="stylesheet" href="/shared/header.css" />
+    <link rel="stylesheet" href="battle.css" />
+  </head>
+  <body>
+    <div id="header-placeholder"></div>
+
+    <div class="layout">
+      <main class="main-content">
+        <div class="battle-container">
+          <h1>Pokémon Battle Arena</h1>
+
+          <div id="setupSection" class="battle-section">
+            <button id="startBattleBtn" class="battle-button">
+              Start Battle
+            </button>
+          </div>
+
+          <div id="battleSection" class="battle-section" style="display: none">
+            <div class="battle-arena">
+              <div class="pokemon-card player1">
+                <div class="pokemon-info">
+                  <h2 id="pokemon1Name">-</h2>
+                  <img id="pokemon1Img" src="" alt="Pokemon 1" />
+                </div>
+                <div class="stats">
+                  <div class="stat-row">
+                    <span>HP:</span>
+                    <span id="pokemon1HP">-</span>
+                  </div>
+                  <div class="health-bar">
+                    <div id="pokemon1HealthBar" class="health-fill"></div>
+                  </div>
+                  <div class="stat-row">
+                    <span>Attack:</span>
+                    <span id="pokemon1Attack">-</span>
+                  </div>
+                  <div class="stat-row">
+                    <span>Defense:</span>
+                    <span id="pokemon1Defense">-</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="vs-separator">VS</div>
+
+              <div class="pokemon-card player2">
+                <div class="pokemon-info">
+                  <h2 id="pokemon2Name">-</h2>
+                  <img id="pokemon2Img" src="" alt="Pokemon 2" />
+                </div>
+                <div class="stats">
+                  <div class="stat-row">
+                    <span>HP:</span>
+                    <span id="pokemon2HP">-</span>
+                  </div>
+                  <div class="health-bar">
+                    <div id="pokemon2HealthBar" class="health-fill"></div>
+                  </div>
+                  <div class="stat-row">
+                    <span>Attack:</span>
+                    <span id="pokemon2Attack">-</span>
+                  </div>
+                  <div class="stat-row">
+                    <span>Defense:</span>
+                    <span id="pokemon2Defense">-</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="turn-counter">
+              <h3>Turn: <span id="turnCounter">0</span>/5</h3>
+            </div>
+
+            <div class="battle-log">
+              <h3>Battle Log</h3>
+              <div id="battleLog" class="log-content">
+                <p class="log-entry">Battle started!</p>
+              </div>
+            </div>
+
+            <div
+              id="resultSection"
+              class="result-section"
+              style="display: none"
+            >
+              <h2 id="resultText">-</h2>
+              <button id="newBattleBtn" class="battle-button">
+                New Battle
+              </button>
+              <a href="/Pokemon/pokemon.html" class="battle-button secondary"
+                >Back to Pokédex</a
+              >
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../script.js"></script>
+    <script src="battle.js"></script>
+  </body>
+</html>

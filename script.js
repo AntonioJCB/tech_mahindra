@@ -1,3 +1,4 @@
+//Carga los usuarios guardados en localStorage y los convierte de JSON a un arreglo de objetos.
 function loadUsers() {
   const json = localStorage.getItem("users");
   if (!json) return [];
@@ -10,20 +11,24 @@ function loadUsers() {
   }
 }
 
+//Guarda el usuario actual y crea un token de sesión en localStorage.
 function setAuth(username) {
   localStorage.setItem("currentUser", username);
   localStorage.setItem("sessionToken", Date.now().toString());
 }
 
+//Elimina los datos de sesión del usuario (logout).
 function clearAuth() {
   localStorage.removeItem("currentUser");
   localStorage.removeItem("sessionToken");
 }
 
+//Verifica si existe un usuario logueado en localStorage.
 function isAuthenticated() {
   return !!localStorage.getItem("currentUser");
 }
 
+//Controla el acceso a las páginas, redirigiendo al login si no hay sesión o al home si ya está autenticado.
 function verifyAuth() {
   const path = location.pathname.toLowerCase();
   if (
@@ -40,6 +45,7 @@ function verifyAuth() {
   }
 }
 
+//Carga dinámicamente el header compartido desde un archivo HTML.
 function loadHeaderNav() {
   const placeholder = document.getElementById("header-placeholder");
   if (!placeholder) return;
@@ -61,6 +67,7 @@ function loadHeaderNav() {
     .catch((err) => console.error("Failed to load header partial", err));
 }
 
+//Actualiza el título del header con el título de la página y muestra el usuario logueado.
 function updateHeaderTitle() {
   const h1 = document.querySelector("header h1");
   if (h1) {
@@ -73,6 +80,7 @@ function updateHeaderTitle() {
   }
 }
 
+//Marca en el menú de navegación el link correspondiente a la página actual.
 function setActiveNav() {
   const links = document.querySelectorAll(".nav-list a");
   links.forEach((link) => {
@@ -82,6 +90,7 @@ function setActiveNav() {
   });
 }
 
+//Controla el menú desplegable del usuario y la funcionalidad de cerrar sesión.
 function setupUserMenu() {
   const btn = document.getElementById("user-icon-btn");
   const dropdown = document.getElementById("user-dropdown");
@@ -110,6 +119,7 @@ function setupUserMenu() {
     dropdownLogout.addEventListener("click", clearAndRedirect);
 }
 
+//Guarda el arreglo de usuarios en localStorage en formato JSON.
 function saveUsers(users) {
   localStorage.setItem("users", JSON.stringify(users));
 }
@@ -183,14 +193,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-async function fetchPokemon(limit = 150, offset = 0) {
+//Obtiene una lista de Pokémon desde la API, consulta sus detalles y devuelve un arreglo con su información (id, nombre, imagen, stats y tipos).
+async function fetchPokemon(limit = 1350, offset = 0) {
   try {
     const response = await fetch(
       `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`,
     );
     const data = await response.json();
 
-    // Fetch detailed data for each Pokémon
     const pokemonList = await Promise.all(
       data.results.map(async (pokemon) => {
         const detailResponse = await fetch(pokemon.url);
@@ -199,7 +209,7 @@ async function fetchPokemon(limit = 150, offset = 0) {
           id: detailData.id,
           name: detailData.name,
           image:
-            detailData.sprites.other["official-artwork"].front_default ||
+            detailData.sprites.other["showdown"].front_shiny ||
             detailData.sprites.front_default,
           stats: detailData.stats,
           types: detailData.types,
@@ -207,7 +217,6 @@ async function fetchPokemon(limit = 150, offset = 0) {
       }),
     );
 
-    // Sort by ID
     pokemonList.sort((a, b) => a.id - b.id);
 
     return pokemonList;

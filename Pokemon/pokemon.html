@@ -20,7 +20,7 @@
               type="text"
               id="searchInput"
               class="search-input"
-              placeholder="Search by name or ID..."
+              placeholder="Search by name or ID"
             />
             <select id="typeFilter" class="filter-select">
               <option value="">All Types</option>
@@ -57,11 +57,10 @@
         let allPokemon = [];
         let allTypes = new Set();
         let currentOffset = 0;
-        const batchSize = 150;
+        const batchSize = 1350;
         let isLoading = false;
         let hasMore = true;
 
-        // Create intersection observer for infinite scroll
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
@@ -89,16 +88,13 @@
           allPokemon = [...allPokemon, ...newPokemon];
           currentOffset += batchSize;
 
-          // Extract all unique types
           newPokemon.forEach((pokemon) => {
             pokemon.types.forEach((type) => {
               allTypes.add(type.type.name);
             });
           });
 
-          // Populate type filter if not already done
           if (typeFilter.children.length === 1) {
-            // Only "All Types" option
             const sortedTypes = Array.from(allTypes).sort();
             sortedTypes.forEach((type) => {
               const option = document.createElement("option");
@@ -112,7 +108,6 @@
 
           displayPokemon(newPokemon);
 
-          // Add sentinel element for infinite scroll
           if (hasMore) {
             const sentinel = document.createElement("div");
             sentinel.id = "scroll-sentinel";
@@ -137,20 +132,18 @@
             allPokemon = [...allPokemon, ...newPokemon];
             currentOffset += batchSize;
 
-            // Extract new types
             newPokemon.forEach((pokemon) => {
               pokemon.types.forEach((type) => {
                 allTypes.add(type.type.name);
               });
             });
 
-            displayPokemon(newPokemon, true); // Append mode
+            displayPokemon(newPokemon, true);
           }
 
           loadMoreIndicator.style.display = "none";
           isLoading = false;
 
-          // Update sentinel if still has more
           if (hasMore) {
             const sentinel = document.getElementById("scroll-sentinel");
             if (sentinel) {
@@ -165,7 +158,6 @@
           if (!append) {
             pokemonGrid.innerHTML = "";
           } else {
-            // Remove existing sentinel when appending
             const existingSentinel = document.getElementById("scroll-sentinel");
             if (existingSentinel) {
               observer.unobserve(existingSentinel);
@@ -210,7 +202,6 @@
             pokemonGrid.appendChild(card);
           });
 
-          // Re-add sentinel if has more and no filters
           if (hasMore && !searchInput.value.trim() && !typeFilter.value) {
             const sentinel = document.createElement("div");
             sentinel.id = "scroll-sentinel";
@@ -227,20 +218,17 @@
           const hasFilters = searchQuery || selectedType;
 
           if (hasFilters) {
-            // Disable infinite scroll when filtering
             const sentinel = document.getElementById("scroll-sentinel");
             if (sentinel) {
               observer.unobserve(sentinel);
             }
 
             const filtered = allPokemon.filter((pokemon) => {
-              // Filter by search query (name or ID)
               const matchesSearch =
                 !searchQuery ||
                 pokemon.name.toLowerCase().includes(searchQuery) ||
                 pokemon.id.toString().includes(searchQuery);
 
-              // Filter by type
               const matchesType =
                 !selectedType ||
                 pokemon.types.some((type) => type.type.name === selectedType);
@@ -250,7 +238,6 @@
 
             displayPokemon(filtered);
           } else {
-            // Re-enable infinite scroll when no filters
             displayPokemon(allPokemon);
             if (hasMore) {
               const sentinel = document.getElementById("scroll-sentinel");
