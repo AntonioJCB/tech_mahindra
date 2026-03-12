@@ -22,11 +22,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-async function getRandomPokemon() {
+// fetch a Pokémon by name or numeric ID
+async function getPokemon(query) {
+  if (!query) return null;
   try {
-    const randomId = Math.floor(Math.random() * 1025) + 1;
+    const normalized = query.toString().trim().toLowerCase();
     const response = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/${randomId}`,
+      `https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(normalized)}`,
     );
     if (!response.ok) throw new Error("Pokemon fetch failed");
     const data = await response.json();
@@ -34,7 +36,7 @@ async function getRandomPokemon() {
     return {
       name: data.name,
       image:
-        data.sprites.other["official-artwork"].front_default ||
+        data.sprites.other["showdown"].front_shiny ||
         data.sprites.front_default,
       hp: data.stats[0].base_stat,
       attack: data.stats[1].base_stat,
@@ -52,17 +54,27 @@ async function initiateBattle() {
   const battleSection = document.getElementById("battleSection");
   const startBattleBtn = document.getElementById("startBattleBtn");
 
+  const p1Input = document.getElementById("pokemon1Input").value;
+  const p2Input = document.getElementById("pokemon2Input").value;
+
+  if (!p1Input || !p2Input) {
+    alert("Please enter both Pokémon names or IDs before starting.");
+    return;
+  }
+
   startBattleBtn.disabled = true;
   startBattleBtn.textContent = "Loading...";
 
   console.log("Fetching Pokemon...");
   const [poke1, poke2] = await Promise.all([
-    getRandomPokemon(),
-    getRandomPokemon(),
+    getPokemon(p1Input),
+    getPokemon(p2Input),
   ]);
 
   if (!poke1 || !poke2) {
-    alert("Failed to load Pokemon. Please try again.");
+    alert(
+      "Failed to load one or both Pokémon. Please check the names/IDs and try again.",
+    );
     startBattleBtn.disabled = false;
     startBattleBtn.textContent = "Start Battle";
     return;
